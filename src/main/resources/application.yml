@@ -1,0 +1,45 @@
+# Settings shared by every profile. Environment-specific values live in application-<profile>.yml.
+spring:
+  application:
+    name: minipay
+  profiles:
+    default: local
+
+  jpa:
+    # Keeps the Hibernate session from leaking into the web layer. With it on, lazy loading
+    # silently runs SQL during JSON serialization and holds a DB connection for the whole request.
+    open-in-view: false
+    hibernate:
+      # Flyway owns the schema; Hibernate only checks that entities match it.
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    locations: classpath:db/migration
+
+  kafka:
+    producer:
+      # Wait for all in-sync replicas and let the broker de-duplicate producer retries.
+      acks: all
+      properties:
+        enable.idempotence: true
+
+  threads:
+    virtual:
+      # Platform threads for now; Phase 3 turns this on and measures the difference.
+      enabled: false
+
+server:
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

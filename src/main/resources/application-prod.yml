@@ -1,0 +1,24 @@
+# Profile "prod": no defaults on purpose. A missing variable must stop the app at startup,
+# not silently connect to localhost.
+spring:
+  datasource:
+    url: ${MINIPAY_DB_URL}
+    username: ${MINIPAY_DB_USER}
+    password: ${MINIPAY_DB_PASSWORD}
+    hikari:
+      pool-name: minipay-pool
+      maximum-pool-size: ${MINIPAY_DB_POOL_SIZE:20}
+      connection-timeout: 3000
+
+  data:
+    redis:
+      host: ${MINIPAY_REDIS_HOST}
+      port: ${MINIPAY_REDIS_PORT:6379}
+
+  kafka:
+    bootstrap-servers: ${MINIPAY_KAFKA_BOOTSTRAP}
+
+management:
+  endpoint:
+    health:
+      show-details: never

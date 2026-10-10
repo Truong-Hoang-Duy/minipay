@@ -1,0 +1,11 @@
+# Profile "test": connection details come from Testcontainers (@ServiceConnection),
+# so only test-specific behaviour goes here.
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 5
+
+logging:
+  level:
+    com.minipay: debug
+    org.testcontainers: info

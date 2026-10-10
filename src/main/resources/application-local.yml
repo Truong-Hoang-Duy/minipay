@@ -1,0 +1,24 @@
+# Profile "local": the app runs on the host, infrastructure runs via `docker compose up -d`.
+spring:
+  datasource:
+    url: jdbc:mysql://${MINIPAY_DB_HOST:localhost}:3306/minipay?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true
+    username: ${MINIPAY_DB_USER:minipay}
+    password: ${MINIPAY_DB_PASSWORD:minipay}
+    hikari:
+      pool-name: minipay-pool
+      # Small on purpose. Phase 6 tunes this with load-test numbers instead of guessing.
+      maximum-pool-size: 10
+      # Fail a request after 3s waiting for a connection instead of queueing forever.
+      connection-timeout: 3000
+
+  data:
+    redis:
+      host: ${MINIPAY_REDIS_HOST:localhost}
+      port: 6379
+
+  kafka:
+    bootstrap-servers: ${MINIPAY_KAFKA_BOOTSTRAP:localhost:9092}
+
+logging:
+  level:
+    com.minipay: debug
